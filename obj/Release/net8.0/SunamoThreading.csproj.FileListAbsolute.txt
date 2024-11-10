@@ -9,3 +9,4 @@ E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoThreading\obj\Release\net8
 E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoThreading\obj\Release\net8.0\refint\SunamoThreading.dll
 E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoThreading\obj\Release\net8.0\SunamoThreading.pdb
 E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoThreading\obj\Release\net8.0\ref\SunamoThreading.dll
+E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoThreading\obj\Release\net8.0\SunamoThreading.sourcelink.json

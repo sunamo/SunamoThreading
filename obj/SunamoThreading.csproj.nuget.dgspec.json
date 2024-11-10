@@ -5,7 +5,7 @@
   },
   "projects": {
     "E:\\vs\\Projects\\PlatformIndependentNuGetPackages\\SunamoThreading\\SunamoThreading.csproj": {
-      "version": "24.11.9.1",
+      "version": "24.11.10.1",
       "restore": {
         "projectUniqueName": "E:\\vs\\Projects\\PlatformIndependentNuGetPackages\\SunamoThreading\\SunamoThreading.csproj",
         "projectName": "SunamoThreading",
