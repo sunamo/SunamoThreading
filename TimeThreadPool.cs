@@ -8,8 +8,7 @@ public class TimeThreadPool //: IDisposable
     Timer timer = null;
     Dictionary<int, Thread> threads = new Dictionary<int, Thread>();
     Stack<int> stack = new Stack<int>();
-    int maxThreadAtTime = 3;
-    int zbyva = 0;
+    int remain = 0;
     string[] args = null;
 
     /// <summary>
@@ -25,7 +24,7 @@ public class TimeThreadPool //: IDisposable
         {
             maxThreadAtTime = 0;
         }
-        zbyva = args.Length;
+        remain = args.Length;
         this.args = args;
         for (int i = 0; i < args.Length; i++)
         {
@@ -40,15 +39,15 @@ public class TimeThreadPool //: IDisposable
 
 
 
-    void TimerElapsed(object o)
+    void TimerElapsed(object? o)
     {
 #if DEBUG
         ////DebugLogger.Instance.WriteLine(DateTime.Now.ToLongTimeString());
 #endif
 
-        if (zbyva != 0)
+        if (remain != 0)
         {
-            zbyva--;
+            remain--;
             int thread = stack.Pop();
             threads[thread].Start(args[thread]);
         }

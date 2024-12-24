@@ -13,7 +13,7 @@ public sealed class PoolLinkedList : IDisposable
         _workers = new LinkedList<Thread>();
         for (var i = 0; i < size; ++i)
         {
-            var worker = new Thread(Worker) { Name = string.Concat(sess.i18n(XlfKeys.Worker) + " ", i) };
+            var worker = new Thread(Worker) { Name = string.Concat(Sess.i18n(XlfKeys.Worker) + " ", i) };
             worker.Start();
             _workers.AddLast(worker);
         }
@@ -52,8 +52,8 @@ public sealed class PoolLinkedList : IDisposable
     {
         lock (_tasks)
         {
-            if (_disallowAdd) { throw new Exception(sess.i18n(XlfKeys.ThisPoolInstanceIsInTheProcessOfBeingDisposedCanTAddAnymore)); }
-            if (_disposed) { throw new Exception(sess.i18n(XlfKeys.ThisPoolInstanceHasAlreadyBeenDisposed)); }
+            if (_disallowAdd) { throw new Exception(Sess.i18n(XlfKeys.ThisPoolInstanceIsInTheProcessOfBeingDisposedCanTAddAnymore)); }
+            if (_disposed) { throw new Exception(Sess.i18n(XlfKeys.ThisPoolInstanceHasAlreadyBeenDisposed)); }
             _tasks.AddLast(task);
             Monitor.PulseAll(_tasks); // pulse because tasks count changed
         }

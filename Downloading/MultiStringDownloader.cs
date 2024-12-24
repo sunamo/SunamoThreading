@@ -5,13 +5,10 @@ using System.Net;
 /// 
 /// </summary>
 /// <typeparam name="T">Typ vstupu, měl by začínat slovem Input</typeparam>
-/// <typeparam name="U">Vždy Object---Typ vrácení, měl by začínat slovem Output</typeparam>
-/// <typeparam name="X">Funkce která vrací U </typeparam>
 public class MultiStringDownloader<T> //: IMultiThreaded<T>
     where T : IInputDownload
 {
     TimeThreadPool mtp = null;
-    //Dictionary<T, Exception> exceptions = new Dictionary<T, Exception>();
     Action<T, object> evaluationMethod = null;
     Action<T, Exception> passExceptionMethod = null;
 
@@ -28,7 +25,7 @@ public class MultiStringDownloader<T> //: IMultiThreaded<T>
         this.passExceptionMethod = passExceptionMethod;
     }
 
-    void Download(object o)
+    void Download(object? o)
     {
         T t = (T)o;
         WebClient wc = new WebClient();

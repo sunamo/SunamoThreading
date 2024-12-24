@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-internal class sess
+internal class Sess
 {
-    internal static string? i18n(object thisPoolInstanceIsInTheProcessOfBeingDisposedCanTAddAnymore)
+    internal static string? FromKey(object thisPoolInstanceIsInTheProcessOfBeingDisposedCanTAddAnymore)
     {
         throw new NotImplementedException();
     }
