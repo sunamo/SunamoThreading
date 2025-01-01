@@ -59,7 +59,6 @@ public sealed class PoolLinkedList : IDisposable
         }
     }
 
-    static Type type = typeof(PoolLinkedList);
 
     private void Worker()
     {
