@@ -1,5 +1,4 @@
 namespace SunamoThreading.Downloading;
-using System.Net;
 
 /// <summary>
 /// 
@@ -11,7 +10,6 @@ public class MultiStringDownloader<T> //: IMultiThreaded<T>
     TimeThreadPool mtp = null;
     Action<T, object> evaluationMethod = null;
     Action<T, Exception> passExceptionMethod = null;
-
     /// <summary>
     /// A3 nemůže být params
     /// </summary>
@@ -24,7 +22,6 @@ public class MultiStringDownloader<T> //: IMultiThreaded<T>
         this.evaluationMethod = evaluationMethod;
         this.passExceptionMethod = passExceptionMethod;
     }
-
     void Download(object? o)
     {
         T t = (T)o;

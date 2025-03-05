@@ -1,5 +1,4 @@
 namespace SunamoThreading;
-using SunamoThreading._sunamo;
 
 public sealed class PoolLinkedList : IDisposable
 {
@@ -7,7 +6,6 @@ public sealed class PoolLinkedList : IDisposable
     private readonly LinkedList<Action> _tasks = new LinkedList<Action>(); // actions to be processed by worker threads
     private bool _disallowAdd; // set to true when disposing queue but there are still tasks pending
     private bool _disposed; // set to true when disposing queue and no more tasks are pending
-
     public PoolLinkedList(int size)
     {
         _workers = new LinkedList<Thread>();
@@ -18,7 +16,6 @@ public sealed class PoolLinkedList : IDisposable
             _workers.AddLast(worker);
         }
     }
-
     public void Dispose()
     {
         var waitForThreads = false;
@@ -27,13 +24,11 @@ public sealed class PoolLinkedList : IDisposable
             if (!_disposed)
             {
                 GC.SuppressFinalize(this);
-
                 _disallowAdd = true; // wait for all tasks to finish processing while not allowing any more new tasks
                 while (_tasks.Count > 0)
                 {
                     Monitor.Wait(_tasks);
                 }
-
                 _disposed = true;
                 Monitor.PulseAll(_tasks); // wake all workers (none of them will be active at this point; disposed flag will cause then to finish so that we can join them)
                 waitForThreads = true;
@@ -47,7 +42,6 @@ public sealed class PoolLinkedList : IDisposable
             }
         }
     }
-
     public void QueueTask(Action task)
     {
         lock (_tasks)
@@ -58,8 +52,6 @@ public sealed class PoolLinkedList : IDisposable
             Monitor.PulseAll(_tasks); // pulse because tasks count changed
         }
     }
-
-
     private void Worker()
     {
         Action task = null;
@@ -84,7 +76,6 @@ public sealed class PoolLinkedList : IDisposable
                     Monitor.Wait(_tasks); // go to sleep, either not our turn or no task to process
                 }
             }
-
             task(); // process the found task
             lock (_tasks)
             {
@@ -93,6 +84,4 @@ public sealed class PoolLinkedList : IDisposable
             task = null;
         }
     }
-
-
 }
