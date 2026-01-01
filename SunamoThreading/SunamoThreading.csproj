@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Description>Various types of thread pools and more</Description>
-    <Version>25.12.31.1</Version>
+    <Version>26.1.1.182</Version>
     <PackageReleaseNotes>feat: better naming for variables</PackageReleaseNotes>
     <Authors>www.sunamo.cz</Authors>
     <Copyright>www.sunamo.cz</Copyright>
