@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SunamoThreading.Tests\\SunamoThreading.Tests.csproj" />
+  <Project Path="RunnerThreading\\RunnerThreading.csproj" />
+  <Project Path="SunamoThreading\SunamoThreading.csproj" />
+</Solution>
