@@ -1,3 +1,4 @@
+// variables names: ok
 namespace SunamoThreading.Tests;
 
 public class UnitTest1
