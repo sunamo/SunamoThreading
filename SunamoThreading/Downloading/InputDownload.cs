@@ -1,14 +1,20 @@
 namespace SunamoThreading.Downloading;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
 /// <summary>
-/// Obsahuje URI ke stažení - každá URI má jedinečné identifikační číslo
+/// Contains a URI to download. Each URI has a unique identification number.
 /// </summary>
+/// <param name="uri">The URI to download.</param>
+/// <param name="id">The unique identification number for this download.</param>
 public class InputDownload(string uri, int id) : IInputDownload
 {
-    public int ID = id;
+    /// <summary>
+    /// Gets or sets the unique identification number for this download.
+    /// </summary>
+    public int ID { get; set; } = id;
 
+    /// <summary>
+    /// Gets or sets the URI to download.
+    /// </summary>
     public string Uri
     {
         get;

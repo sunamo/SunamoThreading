@@ -1,29 +1,29 @@
 namespace SunamoThreading;
 
 /// <summary>
-/// MyThreadPool implements a simple thread pool, that allows for dynamic change of number
-/// of working threads.
-/// Size of pool isnt fixed, it can has more elements than poolSize
+/// Implements a simple thread pool that allows dynamic change of the number of working threads.
+/// Pool size is not fixed and can have more elements than the configured pool size.
 /// </summary>
 public class MyThreadPool : IThreadPool
 {
     /// <summary>
-    /// Max. size of pool
+    /// Maximum size of the pool.
     /// </summary>
     private int poolSize;
     /// <summary>
-    /// Threads running in momen
+    /// Threads currently running in the pool.
     /// </summary>
     private List<Thread> threads = new List<Thread>();
     /// <summary>
-    /// 
+    /// Queue of pending jobs to be processed.
     /// </summary>
     private Queue<WaitCallback> jobs = new Queue<WaitCallback>();
-    static Type type = typeof(MyThreadPool);
+
     /// <summary>
-    /// Add thread to queue and call Monitor.Pulse on queue
+    /// Adds a work item to the job queue and signals waiting threads.
     /// </summary>
-    /// <param name="callBack"></param>
+    /// <param name="callBack">The callback method to be queued for execution.</param>
+    /// <returns>True if the work item was successfully queued.</returns>
     public bool QueueUserWorkItem(WaitCallback callBack)
     {
         if (callBack == null)
@@ -35,10 +35,13 @@ public class MyThreadPool : IThreadPool
         }
         return true;
     }
+
     /// <summary>
-    /// After reducing the number of working threads, currently working threads are allowed to finish their jobs (they're not interrupted).
+    /// Sets the pool size. After reducing the number of working threads,
+    /// currently working threads are allowed to finish their jobs (they are not interrupted).
     /// </summary>
-    /// <param name="size"></param>
+    /// <param name="size">The desired number of threads in the pool.</param>
+    /// <returns>True if the pool size was successfully updated.</returns>
     public bool SetPoolSize(int size)
     {
         lock (threads)
@@ -48,27 +51,29 @@ public class MyThreadPool : IThreadPool
                 spawnThreads();
             else if (poolSize < threads.Count)
             {
-                lock (jobs) Monitor.PulseAll(jobs); //wake them up, so some of them might finish
+                lock (jobs) Monitor.PulseAll(jobs);
             }
         }
         return true;
     }
+
     /// <summary>
-    /// Run new threads up to size of pool
+    /// Spawns new threads up to the configured pool size.
     /// </summary>
     private void spawnThreads()
     {
         while (threads.Count < poolSize)
         {
-            Thread t = new Thread(ConsumeJobs);
-            threads.Add(t);
-            t.Start();
+            Thread thread = new Thread(consumeJobs);
+            threads.Add(thread);
+            thread.Start();
         }
     }
+
     /// <summary>
-    /// Runner method for new thread
+    /// Runner method for worker threads that continuously dequeues and executes jobs.
     /// </summary>
-    private void ConsumeJobs()
+    private void consumeJobs()
     {
         WaitCallback job;
         while (true)
@@ -77,17 +82,18 @@ public class MyThreadPool : IThreadPool
             lock (jobs)
             {
                 while (jobs.Count == 0 && !(poolSize < threads.Count))
-                    Monitor.Wait(jobs); //wait, if no more jobs, but should not kill any threads
+                    Monitor.Wait(jobs);
                 if (killThreadIfNeeded()) return;
                 job = jobs.Dequeue();
             }
             job(null);
         }
     }
+
     /// <summary>
-    /// If is more running then poolSize, remove Thread.CurrentThread
-    /// Returns true if invoking thread should be killed (break his loop), false otherwise
+    /// Checks if there are more running threads than the pool size and removes the current thread if needed.
     /// </summary>
+    /// <returns>True if the invoking thread should terminate, false otherwise.</returns>
     private bool killThreadIfNeeded()
     {
         if (poolSize < threads.Count)
@@ -103,10 +109,15 @@ public class MyThreadPool : IThreadPool
         }
         return false;
     }
-    /* Returns most recently set size of the pool. */
+
+    /// <summary>
+    /// Gets the most recently set size of the pool.
+    /// </summary>
     public int PoolSize { get { return poolSize; } }
-    /* Gets the actual size of the pool. It might not be equal to PoolSize, when number
-		   of threads is stabilizing after pool size change. This value is for information only
-		   and should not be relied upon. */
+
+    /// <summary>
+    /// Gets the actual number of threads in the pool. It might not equal PoolSize when
+    /// the number of threads is stabilizing after a pool size change.
+    /// </summary>
     public int ActualPoolSize { get { return threads.Count; } }
 }

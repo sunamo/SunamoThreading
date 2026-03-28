@@ -1,32 +1,34 @@
 # SunamoThreading
 
-Various types of thread pools and more
+Various types of thread pools and multithreaded utilities for .NET.
 
 ## Overview
 
-SunamoThreading is part of the Sunamo package ecosystem, providing modular, platform-independent utilities for .NET development.
+SunamoThreading is part of the Sunamo package ecosystem, providing modular, platform-independent thread pool implementations for .NET development.
 
 ## Main Components
 
-### Key Classes
+### Thread Pool Implementations
 
-- **InputDownload**
-- **MultiStringDownloader**
-- **MyThreadPool**
-- **Pool**
-- **PoolLinkedList**
-- **ThreadPool**
-- **ThreadPoolEvent**
+- **MyThreadPool** - A simple thread pool with dynamic pool size adjustment. Implements `IThreadPool`.
+- **Pool** - A list-based thread pool where workers process actions in FIFO order. Implements `IDisposable`.
+- **PoolLinkedList** - A linked-list-based thread pool variant. Implements `IDisposable`.
+- **TimeThreadPool** - Starts threads on a timed interval using an internal timer.
 
-### Key Methods
+### Events
 
-- `InputDownload()`
-- `QueueUserWorkItem()`
-- `SetPoolSize()`
-- `Dispose()`
-- `QueueTask()`
-- `ThreadPoolEvent()`
-- `PartiallyDone()`
+- **ThreadPoolEvent** - Tracks partial completion of multiple operations and fires a `Done` event when all are complete.
+
+### Downloading
+
+- **MultiStringDownloader\<T\>** - Downloads multiple strings concurrently using a timed thread pool.
+- **InputDownload** - Represents a download input with a URI and unique ID.
+
+### Interfaces
+
+- **IThreadPool** - Contract for thread pools that can queue work items and resize dynamically.
+- **IInputDownload** - Represents a download input providing both a URI and an ID.
+- **IUri** - Provides access to a URI string property.
 
 ## Installation
 
@@ -34,22 +36,16 @@ SunamoThreading is part of the Sunamo package ecosystem, providing modular, plat
 dotnet add package SunamoThreading
 ```
 
+## Target Frameworks
+
+- .NET 10.0
+- .NET 9.0
+- .NET 8.0
+
 ## Dependencies
 
-- **Microsoft.Extensions.Logging.Abstractions** (v9.0.3)
-
-## Package Information
-
-- **Package Name**: SunamoThreading
-- **Version**: 25.6.7.1
-- **Target Framework**: net9.0
-- **Category**: Platform-Independent NuGet Package
-- **Source Files**: 13
-
-## Related Packages
-
-This package is part of the Sunamo package ecosystem. For more information about related packages, visit the main repository.
+- **Microsoft.Extensions.Logging.Abstractions**
 
 ## License
 
-See the repository root for license information.
+MIT

@@ -1,18 +1,27 @@
 namespace SunamoThreading;
 
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-public class ThreadPoolEvent(int n)
+/// <summary>
+/// Tracks partial completion of multiple thread pool operations and fires an event when all are done.
+/// </summary>
+/// <param name="expectedCount">The total number of partial completions expected before firing the Done event.</param>
+public class ThreadPoolEvent(int expectedCount)
 {
-    int finished = 0;
-    public event Action Done;
+    private int finished = 0;
 
+    /// <summary>
+    /// Occurs when all expected partial operations have completed.
+    /// </summary>
+    public event Action? Done;
+
+    /// <summary>
+    /// Signals that one partial operation has completed. Fires <see cref="Done"/> when all expected operations finish.
+    /// </summary>
     public void PartiallyDone()
     {
         finished++;
-        if (finished == n)
+        if (finished == expectedCount)
         {
-            Done();
+            Done?.Invoke();
         }
     }
 }

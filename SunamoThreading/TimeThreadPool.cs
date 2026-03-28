@@ -1,85 +1,87 @@
 namespace SunamoThreading;
 
 /// <summary>
-/// Run by time new thread. 
+/// Runs threads on a timed interval, starting a new thread each time the timer elapses.
 /// </summary>
-public class TimeThreadPool //: IDisposable
+public class TimeThreadPool
 {
-    Timer timer = null;
-    Dictionary<int, Thread> threads = new Dictionary<int, Thread>();
-    Stack<int> stack = new Stack<int>();
-    int remain = 0;
-    string[] args = null;
+    private Timer? timer = null;
+    private Dictionary<int, Thread> threads = new Dictionary<int, Thread>();
+    private Stack<int> threadIndexStack = new Stack<int>();
+    private int remainingCount = 0;
+    private string[]? arguments = null;
 
     /// <summary>
-    /// A3 nemůže být params
+    /// Initializes a new instance of the <see cref="TimeThreadPool"/> class.
+    /// Third parameter cannot be params.
     /// </summary>
-    /// <param name="metoda"></param>
-    /// <param name="maxThreadAtTime"></param>
-    /// <param name="args"></param>
-    public TimeThreadPool(ParameterizedThreadStart metoda, int maxThreadAtTime, string[] args)
+    /// <param name="threadStart">The method each thread will execute.</param>
+    /// <param name="maxConcurrentThreads">The maximum number of threads allowed to run at the same time.</param>
+    /// <param name="arguments">The arguments to pass to each thread, one per thread.</param>
+    public TimeThreadPool(ParameterizedThreadStart threadStart, int maxConcurrentThreads, string[] arguments)
     {
-
-        if (args.Length < maxThreadAtTime)
+        if (arguments.Length < maxConcurrentThreads)
         {
-            maxThreadAtTime = 0;
+            maxConcurrentThreads = 0;
         }
-        remain = args.Length;
-        this.args = args;
-        for (int i = 0; i < args.Length; i++)
+        remainingCount = arguments.Length;
+        this.arguments = arguments;
+        for (int i = 0; i < arguments.Length; i++)
         {
-            stack.Push(i);
-            Thread thread = new Thread(metoda);
-            //thread.Start(args[i]);
+            threadIndexStack.Push(i);
+            Thread thread = new Thread(threadStart);
             threads.Add(i, thread);
         }
-        timer = new Timer(TimerElapsed, null, 0, 1000);
-
+        timer = new Timer(timerElapsed, null, 0, 1000);
     }
 
-
-
-    void TimerElapsed(object? o)
+    /// <summary>
+    /// Callback invoked each time the timer elapses to start the next pending thread.
+    /// </summary>
+    /// <param name="state">Timer callback state (unused).</param>
+    private void timerElapsed(object? state)
     {
-#if DEBUG
-        ////DebugLogger.Instance.WriteLine(DateTime.Now.ToLongTimeString());
-#endif
-
-        if (remain != 0)
+        if (remainingCount != 0)
         {
-            remain--;
-            int thread = stack.Pop();
-            threads[thread].Start(args[thread]);
+            remainingCount--;
+            int threadIndex = threadIndexStack.Pop();
+            threads[threadIndex].Start(arguments![threadIndex]);
         }
         else
         {
-            DisposeTimer();
+            disposeTimer();
         }
     }
 
+    /// <summary>
+    /// Stops all running threads and disposes the timer.
+    /// </summary>
     public void StopAll()
     {
-        // Je lepší Timer úplně zlikvidovat, protože tato třída stejně neumí resumovat ani znovu spouštět
-        DisposeTimer();
+        disposeTimer();
         foreach (KeyValuePair<int, Thread> item in threads)
         {
-            ////////"StopAll:" + item.Value.ThreadState.ToString());
-            if (IsThreadTurnedOn(item))
+            if (isThreadTurnedOn(item))
             {
                 item.Value.Interrupt();
-                //}
             }
         }
     }
 
-    private bool IsThreadTurnedOn(KeyValuePair<int, Thread> item)
+    /// <summary>
+    /// Determines whether the specified thread entry is in a running state.
+    /// </summary>
+    /// <param name="threadEntry">The thread entry to check.</param>
+    /// <returns>True if the thread is actively running, false otherwise.</returns>
+    private bool isThreadTurnedOn(KeyValuePair<int, Thread> threadEntry)
     {
-        return item.Value.ThreadState != ThreadState.Stopped && item.Value.ThreadState != ThreadState.StopRequested && item.Value.ThreadState != ThreadState.WaitSleepJoin;
+        return threadEntry.Value.ThreadState != ThreadState.Stopped && threadEntry.Value.ThreadState != ThreadState.StopRequested && threadEntry.Value.ThreadState != ThreadState.WaitSleepJoin;
     }
 
-
-
-    private void DisposeTimer()
+    /// <summary>
+    /// Disposes the internal timer and releases its resources.
+    /// </summary>
+    private void disposeTimer()
     {
         if (timer != null)
         {
