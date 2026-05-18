@@ -4,11 +4,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Description>Various types of thread pools and more</Description>
-    <Version>26.3.28.4</Version>
-    <PackageReleaseNotes>feat: Improved variable names</PackageReleaseNotes>
+    <Version>26.5.18.5</Version>
+    <PackageReleaseNotes>y</PackageReleaseNotes>
     <Authors>www.sunamo.cz</Authors>
     <Copyright>www.sunamo.cz</Copyright>
-    <PackageProjectUrl>https://sunamo.cz/</PackageProjectUrl>
+    <PackageProjectUrl>https://sunamo.github.io/PlatformIndependentNuGetPackages/SunamoThreading/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sunamo/SunamoThreading.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
