@@ -1,9 +1,5 @@
 namespace SunamoThreading;
 
-/// <summary>
-/// A thread pool implementation using a linked-list-based worker queue.
-/// Workers process actions in FIFO order and are joined on disposal.
-/// </summary>
 public sealed class PoolLinkedList : IDisposable
 {
     private readonly LinkedList<Thread> workers;
@@ -11,10 +7,6 @@ public sealed class PoolLinkedList : IDisposable
     private bool disallowAdd;
     private bool disposed;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PoolLinkedList"/> class with the specified number of worker threads.
-    /// </summary>
-    /// <param name="size">The number of worker threads to create.</param>
     public PoolLinkedList(int size)
     {
         workers = new LinkedList<Thread>();
@@ -26,9 +18,6 @@ public sealed class PoolLinkedList : IDisposable
         }
     }
 
-    /// <summary>
-    /// Disposes the pool by waiting for all pending tasks to complete and joining all worker threads.
-    /// </summary>
     public void Dispose()
     {
         var isWaitingForThreads = false;
@@ -56,10 +45,6 @@ public sealed class PoolLinkedList : IDisposable
         }
     }
 
-    /// <summary>
-    /// Adds a new task to the queue for processing by a worker thread.
-    /// </summary>
-    /// <param name="task">The action to be queued for execution.</param>
     public void QueueTask(Action task)
     {
         lock (tasks)
@@ -71,9 +56,6 @@ public sealed class PoolLinkedList : IDisposable
         }
     }
 
-    /// <summary>
-    /// Worker loop that continuously dequeues and executes tasks.
-    /// </summary>
     private void worker()
     {
         Action? task = null;

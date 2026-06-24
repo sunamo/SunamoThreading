@@ -1,29 +1,11 @@
 namespace SunamoThreading;
 
-/// <summary>
-/// Implements a simple thread pool that allows dynamic change of the number of working threads.
-/// Pool size is not fixed and can have more elements than the configured pool size.
-/// </summary>
 public class MyThreadPool : IThreadPool
 {
-    /// <summary>
-    /// Maximum size of the pool.
-    /// </summary>
     private int poolSize;
-    /// <summary>
-    /// Threads currently running in the pool.
-    /// </summary>
     private List<Thread> threads = new List<Thread>();
-    /// <summary>
-    /// Queue of pending jobs to be processed.
-    /// </summary>
     private Queue<WaitCallback> jobs = new Queue<WaitCallback>();
 
-    /// <summary>
-    /// Adds a work item to the job queue and signals waiting threads.
-    /// </summary>
-    /// <param name="callBack">The callback method to be queued for execution.</param>
-    /// <returns>True if the work item was successfully queued.</returns>
     public bool QueueUserWorkItem(WaitCallback callBack)
     {
         if (callBack == null)
@@ -36,12 +18,6 @@ public class MyThreadPool : IThreadPool
         return true;
     }
 
-    /// <summary>
-    /// Sets the pool size. After reducing the number of working threads,
-    /// currently working threads are allowed to finish their jobs (they are not interrupted).
-    /// </summary>
-    /// <param name="size">The desired number of threads in the pool.</param>
-    /// <returns>True if the pool size was successfully updated.</returns>
     public bool SetPoolSize(int size)
     {
         lock (threads)
@@ -57,9 +33,6 @@ public class MyThreadPool : IThreadPool
         return true;
     }
 
-    /// <summary>
-    /// Spawns new threads up to the configured pool size.
-    /// </summary>
     private void spawnThreads()
     {
         while (threads.Count < poolSize)
@@ -70,9 +43,6 @@ public class MyThreadPool : IThreadPool
         }
     }
 
-    /// <summary>
-    /// Runner method for worker threads that continuously dequeues and executes jobs.
-    /// </summary>
     private void consumeJobs()
     {
         WaitCallback job;
@@ -90,10 +60,6 @@ public class MyThreadPool : IThreadPool
         }
     }
 
-    /// <summary>
-    /// Checks if there are more running threads than the pool size and removes the current thread if needed.
-    /// </summary>
-    /// <returns>True if the invoking thread should terminate, false otherwise.</returns>
     private bool killThreadIfNeeded()
     {
         if (poolSize < threads.Count)
@@ -110,14 +76,7 @@ public class MyThreadPool : IThreadPool
         return false;
     }
 
-    /// <summary>
-    /// Gets the most recently set size of the pool.
-    /// </summary>
     public int PoolSize { get { return poolSize; } }
 
-    /// <summary>
-    /// Gets the actual number of threads in the pool. It might not equal PoolSize when
-    /// the number of threads is stabilizing after a pool size change.
-    /// </summary>
     public int ActualPoolSize { get { return threads.Count; } }
 }
