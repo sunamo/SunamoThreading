@@ -1,5 +1,10 @@
 # SunamoThreading
 
+## Short description
+
+Knihovna s různými druhy thread poolů a nástroji pro vícevláknové zpracování v .NET. Součást sbírky pinp s testy a Runnerem.
+
+
 Various types of thread pools and multithreaded utilities for .NET.
 
 ## Overview
