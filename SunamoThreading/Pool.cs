@@ -12,7 +12,7 @@ public sealed class Pool : IDisposable
         workers = new List<Thread>();
         for (var i = 0; i < size; ++i)
         {
-            var workerThread = new Thread(worker) { Name = string.Concat(Translate.FromKey(XlfKeys.Worker) + " ", i) };
+            var workerThread = new Thread(worker) { Name = string.Concat("Worker" + " ", i) };
             workerThread.Start();
             workers.Add(workerThread);
         }
@@ -49,8 +49,8 @@ public sealed class Pool : IDisposable
     {
         lock (tasks)
         {
-            if (disallowAdd) { throw new Exception(Translate.FromKey(XlfKeys.ThisPoolInstanceIsInTheProcessOfBeingDisposedCanTAddAnymore)); }
-            if (disposed) { throw new Exception(Translate.FromKey(XlfKeys.ThisPoolInstanceHasAlreadyBeenDisposed)); }
+            if (disallowAdd) { throw new Exception("This pool instance is in the process of being disposed can t add anymore"); }
+            if (disposed) { throw new Exception("This pool instance has already been disposed"); }
             tasks.AddLast(task);
             Monitor.PulseAll(tasks);
         }
