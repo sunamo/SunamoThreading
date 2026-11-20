@@ -1,5 +1,8 @@
 namespace SunamoThreading;
 
+/// <summary>
+/// Represents the pool linked list type.
+/// </summary>
 public sealed class PoolLinkedList : IDisposable
 {
     private readonly LinkedList<Thread> workers;
@@ -7,6 +10,10 @@ public sealed class PoolLinkedList : IDisposable
     private bool disallowAdd;
     private bool disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the pool linked list class.
+    /// </summary>
+    /// <param name="size">The size.</param>
     public PoolLinkedList(int size)
     {
         workers = new LinkedList<Thread>();
@@ -18,6 +25,9 @@ public sealed class PoolLinkedList : IDisposable
         }
     }
 
+    /// <summary>
+    /// Dispose.
+    /// </summary>
     public void Dispose()
     {
         var isWaitingForThreads = false;
@@ -45,6 +55,10 @@ public sealed class PoolLinkedList : IDisposable
         }
     }
 
+    /// <summary>
+    /// Queue task.
+    /// </summary>
+    /// <param name="task">The task.</param>
     public void QueueTask(Action task)
     {
         lock (tasks)

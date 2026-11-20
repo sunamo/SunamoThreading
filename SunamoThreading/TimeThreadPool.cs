@@ -1,5 +1,8 @@
 namespace SunamoThreading;
 
+/// <summary>
+/// Represents the time thread pool type.
+/// </summary>
 public class TimeThreadPool
 {
     private Timer? timer = null;
@@ -9,6 +12,12 @@ public class TimeThreadPool
     private string[]? arguments = null;
 
     // Third parameter cannot be params.
+    /// <summary>
+    /// Initializes a new instance of the time thread pool class.
+    /// </summary>
+    /// <param name="threadStart">The thread start.</param>
+    /// <param name="maxConcurrentThreads">The max concurrent threads.</param>
+    /// <param name="arguments">The arguments.</param>
     public TimeThreadPool(ParameterizedThreadStart threadStart, int maxConcurrentThreads, string[] arguments)
     {
         if (arguments.Length < maxConcurrentThreads)
@@ -40,6 +49,9 @@ public class TimeThreadPool
         }
     }
 
+    /// <summary>
+    /// Stop all.
+    /// </summary>
     public void StopAll()
     {
         disposeTimer();
