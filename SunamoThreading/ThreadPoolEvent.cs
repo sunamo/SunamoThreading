@@ -20,8 +20,8 @@ public class ThreadPoolEvent(int expectedCount)
     /// <returns>The partially done result.</returns>
     public void PartiallyDone()
     {
-        finished++;
-        if (finished == expectedCount)
+        // Called from many threads at once, so the counter is incremented atomically and Done fires exactly once.
+        if (Interlocked.Increment(ref finished) == expectedCount)
         {
             Done?.Invoke();
         }
