@@ -1,6 +1,9 @@
 namespace SunamoThreading.Downloading;
 
 // Third parameter cannot be params.
+/// <summary>
+/// Represents the multi string downloader t type.
+/// </summary>
 public class MultiStringDownloader<T>
     where T : IInputDownload
 {
@@ -8,6 +11,12 @@ public class MultiStringDownloader<T>
     private Action<T, object>? evaluationMethod = null;
     private Action<T, Exception>? passExceptionMethod = null;
 
+    /// <summary>
+    /// Initializes a new instance of the multi string downloader class.
+    /// </summary>
+    /// <param name="evaluationMethod">The evaluation method.</param>
+    /// <param name="passExceptionMethod">The pass exception method.</param>
+    /// <param name="toDownload">The to download.</param>
     public MultiStringDownloader(Action<T, object> evaluationMethod, Action<T, Exception> passExceptionMethod, string[] toDownload)
     {
         timeThreadPool = new TimeThreadPool(download, 5, toDownload);

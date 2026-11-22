@@ -1,11 +1,19 @@
 namespace SunamoThreading;
 
+/// <summary>
+/// Represents the my thread pool type.
+/// </summary>
 public class MyThreadPool : IThreadPool
 {
     private int poolSize;
     private List<Thread> threads = new List<Thread>();
     private Queue<WaitCallback> jobs = new Queue<WaitCallback>();
 
+    /// <summary>
+    /// Queue user work item.
+    /// </summary>
+    /// <param name="callBack">The call back.</param>
+    /// <returns>The queue user work item result.</returns>
     public bool QueueUserWorkItem(WaitCallback callBack)
     {
         if (callBack == null)
@@ -18,6 +26,11 @@ public class MyThreadPool : IThreadPool
         return true;
     }
 
+    /// <summary>
+    /// Set pool size.
+    /// </summary>
+    /// <param name="size">The size.</param>
+    /// <returns>The set pool size result.</returns>
     public bool SetPoolSize(int size)
     {
         lock (threads)
@@ -76,7 +89,13 @@ public class MyThreadPool : IThreadPool
         return false;
     }
 
+    /// <summary>
+    /// Gets the pool size.
+    /// </summary>
     public int PoolSize { get { return poolSize; } }
 
+    /// <summary>
+    /// Gets the actual pool size.
+    /// </summary>
     public int ActualPoolSize { get { return threads.Count; } }
 }

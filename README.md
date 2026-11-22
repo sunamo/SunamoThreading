@@ -54,3 +54,19 @@ dotnet add package SunamoThreading
 ## License
 
 MIT
+
+<!-- sunamo:test-coverage:start -->
+## Test coverage
+
+| Metric | Value |
+|---|---|
+| Method | static |
+| Test projects | 1 |
+| Public types referenced by tests | 4/10 (40.0 %) |
+| Public methods referenced by tests | 5/8 (62.5 %) |
+| Line coverage | n/a |
+| Branch coverage | n/a |
+| Generated (UTC) | 2026-11-22 21:24 |
+
+<!-- sunamo:test-coverage:data {"package":"SunamoThreading","container":"pinp","testProjects":1,"publicTypes":10,"typesReferencedByTests":4,"publicMethods":8,"methodsReferencedByTests":5,"lineRate":null,"branchRate":null,"method":"static","generatedUtc":"2026-11-22 21:24"} -->
+<!-- sunamo:test-coverage:end -->
